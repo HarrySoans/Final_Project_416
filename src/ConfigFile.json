@@ -1,0 +1,161 @@
+{
+  "switches": [
+    {
+      "name": "s1",
+      "ip": "localhost",
+      "port": 3000
+    },
+    {
+      "name": "s2",
+      "ip": "localhost",
+      "port": 3001
+    }
+  ],
+  "devices": [
+    {
+      "name": "H1",
+      "ip": "192.168.1.1",
+      "port": 5000,
+      "virtual_ip": "N4.H4",
+      "gateway_router": "N1.R1"
+    },
+    {
+      "name": "B",
+      "ip": "192.168.1.4",
+      "port": 5001
+    },
+    {
+      "name": "C",
+      "ip": "192.168.1.5",
+      "port": 5002
+    },
+    {
+      "name": "D",
+      "ip": "192.168.1.3",
+      "port": 5003
+    }
+  ],
+  "links": [
+    {
+      "node1": "s1",
+      "node2": "H1"
+    },
+    {
+      "node1": "s1",
+      "node2": "B"
+    },
+    {
+      "node1": "s1",
+      "node2": "s2"
+    },
+    {
+      "node1": "s2",
+      "node2": "C"
+    },
+    {
+      "node1": "s2",
+      "node2": "D"
+    }
+  ],
+  "destination": [
+    {
+      "name": "N1"
+    },
+    {
+      "name": "N2"
+    },
+    {
+      "name": "N3"
+    },
+    {
+      "name": "N4"
+    },
+    {
+      "name": "N5"
+    },
+    {
+      "name": "N6"
+    }
+  ],
+  "routers": [
+    {
+      "name": "R1",
+      "port": 3000,
+      "ip": "192.100.1.1"
+    },
+    {
+      "name": "R2",
+      "port": 3001,
+      "ip": "192.100.4.1"
+    },
+    {
+      "name": "R3",
+      "port": 3003,
+      "ip": "192.100.3.1"
+    }
+  ],
+  "neighbor": [
+    {
+      "node1": "R1",
+      "node2": "R2"
+    },
+    {
+      "node1": "R2",
+      "node2": "R3"
+    }
+  ],
+  "subnet": [
+    {
+      "R1": [
+        {
+          "node": "N1",
+          "port": 1
+        },
+        {
+          "node": "N2",
+          "port": 2
+        },
+        {
+          "node": "N3",
+          "port": 3
+        }
+      ]
+    },
+    {
+      "R2": [
+        {
+          "node": "N3",
+          "port": 1
+        },
+        {
+          "node": "N4",
+          "port": 2
+        }
+      ]
+    },
+    {
+      "R3": [
+        {
+          "node": "N4",
+          "port": 1
+        },
+        {
+          "node": "N5",
+          "port": 2
+        },
+        {
+          "node": "N6",
+          "port": 3
+        }
+      ]
+    }
+  ],
+  "virtual_ips": [
+    {
+      "name": "N4.H4",
+      "prefix_subnet": "192.100.4.0/24",
+      "specific_host": "192.100.4.4"
+    }
+  ],
+  "gateway_router": "N1.R1"
+}
