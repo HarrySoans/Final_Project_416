@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.HashMap;
 import java.util.Map;
 import org.json.simple.JSONObject;
 
@@ -13,22 +14,24 @@ public class Router {
 
     Router(String name, String ip, int port) throws IOException {
         this.name = name;
-        this.ip = ip;
-        this.port = port;
+        this.ip = //get from config;
+        this.port = //get from config;
+        initializeNeighbors();
     }
 
-    public void getNeighbors() {
+    public void initializeNeighbors() {
         Link[] allNeighbors = Parser.parseLinks(this.jsonData);
-        Link[] var2 = allNeighbors;
-        int var3 = allNeighbors.length;
-
-        for(int var4 = 0; var4 < var3; ++var4) {
-            Link neigh = var2[var4];
-            PrintStream var10000 = System.out;
-            String var10001 = neigh.getNode1();
-            var10000.println("Neighbor Name: " + var10001 + " Neighbor port: " + neigh.getNode2());
+        for(Link l : allNeighbors) {
+            if(l.getNode1().equals(this.name)) {
+                if(l.getNode2().startsWith("r")) {
+                    neighbors.put(l.getNode2(), new HashMap<>());
+                }
+            }else if(l.getNode2().equals(this.name)){
+                if(l.getNode1().startsWith("r")) {
+                    neighbors.put(l.getNode1(), new HashMap<>());
+                }
+            }
         }
-
     }
 
     public String getName() {

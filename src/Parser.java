@@ -40,7 +40,7 @@ public class Parser {
             switchList.add(new Switch(name, ip, port));
         }
 
-        return (Switch[])switchList.toArray(new Switch[0]);
+        return switchList.toArray(new Switch[0]);
     }
 
     public static Device[] parseDevices(JSONObject jsonData) {
@@ -59,7 +59,7 @@ public class Parser {
             deviceList.add(new Device(name, ip, port, vIP, gatewayRouter));
         }
 
-        return (Device[])deviceList.toArray(new Device[0]);
+        return deviceList.toArray(new Device[0]);
     }
 
     public static Link[] parseLinks(JSONObject jsonData) {
@@ -75,7 +75,7 @@ public class Parser {
             linkList.add(new Link(node1, node2));
         }
 
-        return (Link[])linkList.toArray(new Link[0]);
+        return linkList.toArray(new Link[0]);
     }
 
     public static Router[] parseRouters(JSONObject jsonData) throws IOException {
@@ -92,7 +92,7 @@ public class Parser {
             routerList.add(new Router(name, ip, port));
         }
 
-        return (Router[])routerList.toArray(new Router[0]);
+        return routerList.toArray(new Router[0]);
     }
 
     public static Map<String, List<Subnet>> parseSubnets(JSONObject jsonData) {
@@ -139,6 +139,6 @@ public class Parser {
             destinationList.add(new Destination(name));
         }
 
-        return (Destination[])destinationList.toArray(new Destination[0]);
+        return destinationList.toArray(new Destination[0]);
     }
 }
