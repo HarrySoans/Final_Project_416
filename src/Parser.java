@@ -87,44 +87,30 @@ public class Parser {
             Object r = var3.next();
             JSONObject router = (JSONObject)r;
             String name = (String)router.get("name");
-            String ip = (String)router.get("ip");
-            int port = ((Number)router.get("port")).intValue();
-            routerList.add(new Router(name, ip, port));
+            routerList.add(new Router(name));
         }
 
         return routerList.toArray(new Router[0]);
     }
 
-    public static Map<String, List<Subnet>> parseSubnets(JSONObject jsonData) {
+    public static List<String> parseSubnets(JSONObject jsonData, String routerName) {
         JSONArray arr = (JSONArray)jsonData.get("subnet");
-        Map<String, List<Subnet>> subnetMap = new HashMap();
-        Iterator var3 = arr.iterator();
+        List<String> subnets = new ArrayList<>();
 
-        while(var3.hasNext()) {
-            Object o = var3.next();
-            JSONObject object = (JSONObject)o;
-            Iterator var6 = object.keySet().iterator();
-
-            while(var6.hasNext()) {
-                Object key = var6.next();
-                String routerName = (String)key;
-                JSONArray subnetArray = (JSONArray)object.get(routerName);
-                List<Subnet> subnets = new ArrayList();
-                Iterator var11 = subnetArray.iterator();
-
-                while(var11.hasNext()) {
-                    Object s = var11.next();
-                    JSONObject subnet = (JSONObject)s;
-                    String node = (String)subnet.get("node");
-                    int port = (Integer)subnet.get("port");
-                    subnets.add(new Subnet(node, port));
+        for(Object r : arr) {
+            JSONObject ob = (JSONObject) r;
+            for(Object key : ob.keySet()) {
+                if(key.equals(routerName)) {
+                    JSONArray net = (JSONArray) ob.get(key);
+                    for(Object o : net) {
+                        JSONObject info = (JSONObject) o;
+                        String netName = (String) info.get("node");
+                        subnets.add(netName);
+                    }
                 }
-
-                subnetMap.put(routerName, subnets);
             }
         }
-
-        return subnetMap;
+        return subnets;
     }
 
     public static Destination[] parseDestinations(JSONObject jsonData) {
@@ -140,5 +126,57 @@ public class Parser {
         }
 
         return destinationList.toArray(new Destination[0]);
+    }
+
+    public static String getIpByName(String routerName, JSONObject data) {
+        System.out.println(routerName);
+        JSONArray arr = (JSONArray) data.get("routers");
+        String ip = null;
+        if(routerName != null) {
+            for(Object ob:arr) {
+                JSONObject routerObj = (JSONObject) ob;
+                if(routerObj.get("name").equals(routerName)) {
+                    ip = (String) routerObj.get("ip");
+                }
+            }
+        }
+        return ip;
+    }
+
+    public static int getPortByName(String routerName, JSONObject data) {
+        JSONArray arr = (JSONArray) data.get("routers");
+        int port = 0;
+        if(routerName != null){
+            for (Object ob : arr) {
+                JSONObject routerObj = (JSONObject) ob;
+                if(routerObj.get("name").equals(routerName)) {
+                    Object portObject = routerObj.get("port");
+                    if (portObject instanceof Number) {
+                        port = ((Number) portObject).intValue();
+                        break;
+                    }
+                }
+            }
+        }
+        return port;
+    }
+
+    public static int getSubnetPort(String netName, JSONObject data) {
+        JSONArray arr = (JSONArray) data.get("subnet");
+        int port = 0;
+        for(Object r : arr) {
+            JSONObject ob = (JSONObject) r;
+            for(Object key : ob.keySet()) {
+                JSONArray net = (JSONArray) ob.get(key);
+                for(Object o : net) {
+                    JSONObject info = (JSONObject) o;
+                    String n = (String) info.get("node");
+                    if(n.equals(netName)) {
+                        port = ((Number) info.get("port")).intValue();
+                    }
+                }
+            }
+        }
+        return port;
     }
 }

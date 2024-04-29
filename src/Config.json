@@ -91,55 +91,55 @@
   ],
   "routers": [
     {
-      "name": "R1",
+      "name": "r1",
       "port": 3000,
       "ip": "192.100.1.1"
     },
     {
-      "name": "R2",
+      "name": "r2",
       "port": 3001,
       "ip": "192.100.4.1"
     },
     {
-      "name": "R3",
+      "name": "r3",
       "port": 3003,
       "ip": "192.100.3.1"
     }
   ],
   "subnet": [
     {
-      "R1": [
+      "r1": [
         {
-          "node": "N1",
+          "node": "n1",
           "port": 1
         },
         {
-          "node": "N2",
+          "node": "n2",
           "port": 2
         }
       ]
     },
     {
-      "R2": [
+      "r2": [
         {
-          "node": "N2",
-          "port": 1
+          "node": "n2",
+          "port": 2
         },
         {
-          "node": "N3",
-          "port": 2
+          "node": "n3",
+          "port": 3
         }
       ]
     },
     {
-      "R3": [
+      "r3": [
         {
-          "node": "N3",
-          "port": 1
+          "node": "n3",
+          "port": 3
         },
         {
-          "node": "N4",
-          "port": 2
+          "node": "n4",
+          "port": 4
         }
       ]
     }
