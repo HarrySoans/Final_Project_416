@@ -135,6 +135,15 @@ public class Router {
             constructUDPacket(ip, port, distanceVector);
         }
     }
+    public Frame receiveFrame() {
+        DatagramPacket packet = packetReceiver();
+        if (packet != null) {
+            byte[] receivedData = packet.getData();
+            String frameData = new String(receivedData, 0, packet.getLength());
+            return Frame.deserialize(frameData);
+        }
+        return null;
+    }
 
     public String getName() {
         return this.name;
