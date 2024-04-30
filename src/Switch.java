@@ -67,10 +67,10 @@ public class Switch {
     // Example method to determine router based on MAC address
     private String determineRouter(String macAddress) {
         // Example implementation of routing logic based on MAC address
+        List<Object> subnets = Parser.parseSubnets(jsonData);
         String subnet = macAddress.split("\\.")[0];
         String router = null;
         String ip = null;
-        List<Object> subnets = Parser.parseSubnets(jsonData);
         for(Object o : subnets) {
             JSONObject ob = (JSONObject) o;
             for(Object k : ob.keySet()) {
@@ -84,8 +84,6 @@ public class Switch {
             }
         }
         ip = Parser.getIpByName(router, jsonData);
-
-        System.out.println(ip);
 
         //Based of config
         return ip;

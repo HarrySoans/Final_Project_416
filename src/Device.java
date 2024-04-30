@@ -43,7 +43,7 @@ public class Device {
                 break;
             }
         }
-        Frame frame = new Frame(vIP, message, dest);
+        Frame frame = new Frame(vIP, dest, message);
         Sender sender = new Sender("localhost", 3000);
 //        Sender sender = new Sender(destIp, destPort);
         try {

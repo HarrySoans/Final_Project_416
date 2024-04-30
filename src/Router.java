@@ -22,9 +22,11 @@ public class Router {
         this.name = name;
         this.port = Parser.getPortByName(name, jsonData);
         this.ip = Parser.getIpByName(name, jsonData);
+        this.distanceVector = new DistanceVector(this.name, new HashMap<>());
         this.neighbors = new HashMap<>();
         this.subnets = Parser.parseConnectedSubnets(jsonData, name);
         initializeNeighbors();
+        initDistanceVector();
         sendDistanceVectorToNeighbors();
     }
 
@@ -43,6 +45,14 @@ public class Router {
         }
     }
 
+    private void sendDistanceVectorToNeighbors() {
+        for (String neighbor : neighbors.keySet()) {
+            String ip = Parser.getIpByName(neighbor, jsonData);
+            int port = Parser.getPortByName(neighbor, jsonData);
+            constructUDPacket(ip, port, distanceVector);
+        }
+    }
+
     private DatagramPacket packetReceiver() {
         DatagramPacket finalMess = null;
         System.out.println("waiting...");
@@ -52,6 +62,7 @@ public class Router {
             DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
             socket.receive(receivePacket);
             finalMess = receivePacket;
+            System.out.println("received: " + finalMess);
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -128,13 +139,6 @@ public class Router {
         }
     }
 
-    private void sendDistanceVectorToNeighbors() {
-        for (String neighbor : neighbors.keySet()) {
-            String ip = Parser.getIpByName(neighbor, jsonData);
-            int port = Parser.getPortByName(neighbor, jsonData);
-            constructUDPacket(ip, port, distanceVector);
-        }
-    }
     public Frame receiveFrame() {
         DatagramPacket packet = packetReceiver();
         if (packet != null) {
@@ -158,7 +162,6 @@ public class Router {
     }
 
     public static void main(String[] args) throws IOException {
-        JSONObject jsonData = Parser.parseJSONFile("src/config.json");
         Router r1 = new Router("r1");
 
         while(true) {
