@@ -51,8 +51,6 @@ public class Device {
         //check if destination is currently in switch subnet if so we jut send it to the PC
 
 
-
-
         Sender sender = new Sender("localhost", 3000);
 //        Sender sender = new Sender(destIp, destPort);
         try {
@@ -83,7 +81,7 @@ public class Device {
     //as a pc I want to send a frame to a switch
 
     public static void main(String[] args) throws IOException {
-        Device d = new Device("p1", "localhost", 3000, "n1.p1", "n1.r1", "n1");
+        Device d = new Device("p1", "localhost", 4000, "n1.p1", "n1.r1", "n1");
         d.startThreads();
     }
 }

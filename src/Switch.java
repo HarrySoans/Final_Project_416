@@ -3,7 +3,9 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -14,7 +16,9 @@ public class Switch {
         int port;
         List<Device> connectedDevices;
         private DatagramSocket socket;
-    JSONObject jsonData = Parser.parseJSONFile("src/config.json");
+        private Map<String, String> forwardingTable;
+        JSONObject jsonData = Parser.parseJSONFile("src/config.json");
+
 
     Switch(String name, String ip, int port) throws IOException {
         this.name = name;
@@ -22,6 +26,7 @@ public class Switch {
         this.port = port;
         this.connectedDevices = new ArrayList<>();
         this.socket = new DatagramSocket(port);
+        this.forwardingTable = new HashMap<>();
     }
 
     public String getName() {
@@ -41,6 +46,15 @@ public class Switch {
         Receiver receiver = new Receiver(socket, this);
         Thread receiverThread = new Thread(receiver);
         receiverThread.start();
+    }
+
+    public void processFrame(Frame frame) {
+        String srcMac = frame.getSrcMac();
+        String destMac = frame.getDestMac();
+        String message = frame.getMessage();
+
+        System.out.println("Source MAC: " + srcMac);
+        System.out.println("Destination MAC: " + destMac);
     }
 
     //check
@@ -107,6 +121,7 @@ public class Switch {
         Switch s = new Switch("s1", "localhost", 3000);
         s.receiveFrames();
         s.determineRouter("n1");
+
     }
 }
 

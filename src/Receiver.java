@@ -20,20 +20,12 @@ class Receiver implements Runnable {
                 socket.receive(packet);
                 String data = new String(packet.getData(), 0, packet.getLength());
 
-                System.out.println("Data: " + data);
-
 //                Switch.forwardPacket(data);
-                //extract the information data
                 Frame receivedFrame = Frame.deserialize(data);
-
-                String srcMac = receivedFrame.getSrcMac();
-                String destMac = receivedFrame.getDestMac();
-                String message = receivedFrame.getMessage();
 //                switchInstance.updateForwardingTable(srcMac, Integer.toString(packet.getPort()));
                 switchInstance.forwardFrameToRouter(receivedFrame);
+                switchInstance.processFrame(receivedFrame);
 
-                System.out.println("Source MAC: " + srcMac);
-                System.out.println("Destination MAC: " + destMac);
             }
         }catch (Exception e) {
             e.printStackTrace();
