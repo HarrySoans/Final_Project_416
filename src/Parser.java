@@ -93,7 +93,17 @@ public class Parser {
         return routerList.toArray(new Router[0]);
     }
 
-    public static List<String> parseSubnets(JSONObject jsonData, String routerName) {
+    public static List<Object> parseSubnets(JSONObject jsonData) {
+        JSONArray arr = (JSONArray)jsonData.get("subnet");
+        List<Object> subnets = new ArrayList<>();
+        for(Object r : arr) {
+            JSONObject ob = (JSONObject) r;
+            subnets.add(ob);
+        }
+        return subnets;
+    }
+
+    public static List<String> parseConnectedSubnets(JSONObject jsonData, String routerName) {
         JSONArray arr = (JSONArray)jsonData.get("subnet");
         List<String> subnets = new ArrayList<>();
 

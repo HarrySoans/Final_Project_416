@@ -30,7 +30,7 @@ class Receiver implements Runnable {
                 String destMac = receivedFrame.getDestMac();
                 String message = receivedFrame.getMessage();
 //                switchInstance.updateForwardingTable(srcMac, Integer.toString(packet.getPort()));
-//                switchInstance.forwardFrame(receivedFrame);
+                switchInstance.forwardFrameToRouter(receivedFrame);
 
                 System.out.println("Source MAC: " + srcMac);
                 System.out.println("Destination MAC: " + destMac);

@@ -5,6 +5,7 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class Switch {
@@ -45,7 +46,7 @@ public class Switch {
     public void forwardFrameToRouter(Frame frame) {
         // Code to determine the router based on destination MAC address
         String destinationMAC = frame.getDestMac();
-        String routerIP = determineRouterForMAC(destinationMAC);
+        String routerIP = determineRouter(destinationMAC);
 
         if (routerIP != null) {
             // Create UDP packet containing the frame data
@@ -64,10 +65,30 @@ public class Switch {
     }
 
     // Example method to determine router based on MAC address
-    private String determineRouterForMAC(String macAddress) {
+    private String determineRouter(String macAddress) {
         // Example implementation of routing logic based on MAC address
+        String subnet = macAddress.split("\\.")[0];
+        String router = null;
+        String ip = null;
+        List<Object> subnets = Parser.parseSubnets(jsonData);
+        for(Object o : subnets) {
+            JSONObject ob = (JSONObject) o;
+            for(Object k : ob.keySet()) {
+                JSONArray a = (JSONArray) ((JSONObject) o).get(k);
+                for (Object n : a) {
+                    JSONObject net = (JSONObject) n;
+                    if(net.get("node").equals(subnet)) {
+                        router = (String) k;
+                    }
+                }
+            }
+        }
+        ip = Parser.getIpByName(router, jsonData);
+
+        System.out.println(ip);
+
         //Based of config
-        return "192.100.1.1";
+        return ip;
     }
 
     // Example method to construct a UDP packet
@@ -83,12 +104,10 @@ public class Switch {
     }
 
 
-
-
-
     public static void main(String[] args) throws IOException {
         Switch s = new Switch("s1", "localhost", 3000);
         s.receiveFrames();
+        s.determineRouter("n1");
     }
 }
 

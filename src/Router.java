@@ -23,7 +23,7 @@ public class Router {
         this.port = Parser.getPortByName(name, jsonData);
         this.ip = Parser.getIpByName(name, jsonData);
         this.neighbors = new HashMap<>();
-        this.subnets = Parser.parseSubnets(jsonData, name);
+        this.subnets = Parser.parseConnectedSubnets(jsonData, name);
         initializeNeighbors();
         sendDistanceVectorToNeighbors();
     }
@@ -159,10 +159,17 @@ public class Router {
 
     public static void main(String[] args) throws IOException {
         JSONObject jsonData = Parser.parseJSONFile("src/config.json");
-        Router r1 = new Router("r2");
-        for(String name : r1.subnets) {
-            System.out.println("connected to: " + name);
-            System.out.println(Parser.getSubnetPort(name, jsonData));
+        Router r1 = new Router("r1");
+
+        while(true) {
+            DatagramPacket packet = r1.packetReceiver();
+            DistanceVector newDV = r1.receivePacket(packet);
+            boolean isUpdated = r1.updateDistanceVector(newDV);
+            System.out.println(newDV);
+//            r1.startDistanceVectorProtocol(3000);
+            if(isUpdated) {
+                r1.sendDistanceVectorToNeighbors();
+            }
         }
     }
 }
