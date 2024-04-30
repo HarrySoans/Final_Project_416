@@ -5,15 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f5a89f38-252b-4904-a562-88fc9004af17" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Final_Project_416/Config.json" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Final_Project_416/Config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Final_Project_416/Device.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Final_Project_416/Device.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Final_Project_416/Receiver.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Final_Project_416/Receiver.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Final_Project_416/Router.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Final_Project_416/Router.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Final_Project_416/Switch.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Final_Project_416/Switch.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Config.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/Config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Device.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Device.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Router.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Router.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Switch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Switch.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

@@ -54,9 +54,10 @@ public class Parser {
             String name = (String)device.get("name");
             String ip = (String)device.get("ip");
             int port = ((Number) device.get("port")).intValue();
-            String vIP = (String)device.get("virtual_ip");
+            String vIP = device.get("subnet") + "." + name;
+            String subnet = (String) device.get("subnet");
             String gatewayRouter = (String)device.get("gateway_router");
-            deviceList.add(new Device(name, ip, port, vIP, gatewayRouter));
+            deviceList.add(new Device(name, ip, port, vIP, gatewayRouter, subnet));
         }
 
         return deviceList.toArray(new Device[0]);

@@ -43,6 +43,8 @@ public class Switch {
         receiverThread.start();
     }
 
+    //check
+
     public void forwardFrameToRouter(Frame frame) {
         // Code to determine the router based on destination MAC address
         String destinationMAC = frame.getDestMac();
@@ -100,7 +102,6 @@ public class Switch {
             return null;
         }
     }
-
 
     public static void main(String[] args) throws IOException {
         Switch s = new Switch("s1", "localhost", 3000);
