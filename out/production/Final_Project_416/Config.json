@@ -77,16 +77,16 @@
   ],
   "destination": [
     {
-      "name": "N1"
+      "name": "n1"
     },
     {
-      "name": "N2"
+      "name": "n2"
     },
     {
-      "name": "N3"
+      "name": "n3"
     },
     {
-      "name": "N4"
+      "name": "n4"
     }
   ],
   "routers": [

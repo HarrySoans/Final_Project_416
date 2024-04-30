@@ -43,7 +43,7 @@ public class Parser {
         return switchList.toArray(new Switch[0]);
     }
 
-    public static Device[] parseDevices(JSONObject jsonData) {
+    public static Device[] parseDevices(JSONObject jsonData) throws IOException {
         JSONArray arr = (JSONArray)jsonData.get("devices");
         List<Device> deviceList = new ArrayList();
         Iterator var3 = arr.iterator();
@@ -53,7 +53,7 @@ public class Parser {
             JSONObject device = (JSONObject)d;
             String name = (String)device.get("name");
             String ip = (String)device.get("ip");
-            int port = (Integer)device.get("port");
+            int port = ((Number) device.get("port")).intValue();
             String vIP = (String)device.get("virtual_ip");
             String gatewayRouter = (String)device.get("gateway_router");
             deviceList.add(new Device(name, ip, port, vIP, gatewayRouter));

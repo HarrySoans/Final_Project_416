@@ -5,7 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f5a89f38-252b-4904-a562-88fc9004af17" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/Router.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Router.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Final_Project_416/Config.json" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Final_Project_416/Config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Final_Project_416/Device.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Final_Project_416/Device.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Final_Project_416/Parser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Final_Project_416/Parser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Final_Project_416/Router.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Final_Project_416/Router.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Final_Project_416/Switch.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Final_Project_416/Switch.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Config.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/Config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Device.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Device.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Switch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Switch.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,8 +46,10 @@
   "keyToString": {
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Application.Circle.executor": "Run",
+    "Application.Device.executor": "Run",
     "Application.Main.executor": "Run",
     "Application.Router.executor": "Run",
+    "Application.Switch.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
@@ -55,9 +66,16 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Application.Router">
+  <component name="RunManager" selected="Application.Device">
     <configuration name="Circle" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Circle" />
+      <module name="Final_Project_416" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Device" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Device" />
       <module name="Final_Project_416" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -79,8 +97,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Switch" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Switch" />
+      <module name="Final_Project_416" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Device" />
+        <item itemvalue="Application.Switch" />
         <item itemvalue="Application.Router" />
         <item itemvalue="Application.Circle" />
       </list>
@@ -103,7 +130,7 @@
       <updated>1714012417313</updated>
       <workItem from="1714012418355" duration="15724000" />
       <workItem from="1714140144327" duration="393000" />
-      <workItem from="1714141902555" duration="10194000" />
+      <workItem from="1714141902555" duration="20529000" />
     </task>
     <servers />
   </component>
