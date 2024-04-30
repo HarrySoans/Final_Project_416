@@ -4,9 +4,10 @@ import java.net.*;
 class Receiver implements Runnable {
     //grab packet, look at headers that contain the src IP
     private final DatagramSocket socket;
-
-    Receiver(DatagramSocket socket) {
+    private final Switch switchInstance;
+    Receiver(DatagramSocket socket, Switch switchInstance) {
         this.socket = socket;
+        this.switchInstance = switchInstance;
     }
 
     public void run() {
@@ -28,6 +29,8 @@ class Receiver implements Runnable {
                 String srcMac = receivedFrame.getSrcMac();
                 String destMac = receivedFrame.getDestMac();
                 String message = receivedFrame.getMessage();
+//                switchInstance.updateForwardingTable(srcMac, Integer.toString(packet.getPort()));
+//                switchInstance.forwardFrame(receivedFrame);
 
                 System.out.println("Source MAC: " + srcMac);
                 System.out.println("Destination MAC: " + destMac);

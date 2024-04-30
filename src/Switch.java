@@ -37,7 +37,7 @@ public class Switch {
 
     //should receive frame from device
     public void receiveFrames() {
-        Receiver receiver = new Receiver(socket);
+        Receiver receiver = new Receiver(socket, this);
         Thread receiverThread = new Thread(receiver);
         receiverThread.start();
     }
