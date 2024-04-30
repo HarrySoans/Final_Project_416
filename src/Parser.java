@@ -2,10 +2,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -36,16 +35,16 @@ public class Parser {
             JSONObject swInstance = (JSONObject)s;
             String name = (String)swInstance.get("name");
             String ip = (String)swInstance.get("ip");
-            int port = (Integer)swInstance.get("port");
+            int port = ((Number)swInstance.get("port")).intValue();
             switchList.add(new Switch(name, ip, port));
         }
 
         return switchList.toArray(new Switch[0]);
     }
 
-    public static Device[] parseDevices(JSONObject jsonData) throws IOException {
+    public static PC[] parseDevices(JSONObject jsonData) throws IOException {
         JSONArray arr = (JSONArray)jsonData.get("devices");
-        List<Device> deviceList = new ArrayList();
+        List<PC> PCList = new ArrayList();
         Iterator var3 = arr.iterator();
 
         while(var3.hasNext()) {
@@ -57,11 +56,21 @@ public class Parser {
             String vIP = device.get("subnet") + "." + name;
             String subnet = (String) device.get("subnet");
             String gatewayRouter = (String)device.get("gateway_router");
-            deviceList.add(new Device(name, ip, port, vIP, gatewayRouter, subnet));
+            PCList.add(new PC(name, ip, port, vIP, gatewayRouter, subnet));
         }
 
-        return deviceList.toArray(new Device[0]);
+        return PCList.toArray(new PC[0]);
     }
+
+//    public Device getDeviceByName(JSONObject jsonData, String deviceName) throws IOException {
+//        Device[] devices = Parser.parseDevices(jsonData);
+//        for(Object d : devices) {
+//            JSONObject device = (JSONObject) d;
+//            if(device.get("name").equals(deviceName)) {
+//                return
+//            }
+//        }
+//    }
 
     public static Link[] parseLinks(JSONObject jsonData) {
         JSONArray arr = (JSONArray)jsonData.get("links");
@@ -79,6 +88,42 @@ public class Parser {
         return linkList.toArray(new Link[0]);
     }
 
+    public static List<Device> parseConnectedDevices(JSONObject jsonData, String deviceName) throws IOException {
+        Link[] links = Parser.parseLinks(jsonData);
+        PC[] pcList = Parser.parseDevices(jsonData);
+        Router[] routerList = Parser.parseRouters(jsonData);
+        Switch[] switchList = Parser.parseSwitches(jsonData);
+        List<Device> connected = new ArrayList<>();
+
+        for (Link l : links) {
+            if(l.getNode1().equals(deviceName)) {
+                //put the device in 2 inside the connected
+                if(l.getNode2().startsWith("r")) {
+                    //create router instance and put here
+                    for (Router r : routerList) {
+                        if(r.getName().equals(l.getNode2())){
+                            connected.add(r);
+                        }
+                    }
+                }else if(l.getNode2().startsWith("p")){
+                    //create pc instance and put here
+                    for (PC p : pcList) {
+                        if(p.getDeviceName().equals(l.getNode2())) {
+                            connected.add(p);
+                        }
+                    }
+                }else if (l.getNode2().startsWith("s")){
+                    for (Switch s : switchList){
+                        if(s.getDeviceName().equals(l.getNode2())) {
+                            connected.add(s);
+                        }
+                    }
+                }
+            }
+        }
+        return connected;
+    }
+
     public static Router[] parseRouters(JSONObject jsonData) throws IOException {
         JSONArray arr = (JSONArray)jsonData.get("routers");
         List<Router> routerList = new ArrayList();
@@ -88,7 +133,9 @@ public class Parser {
             Object r = var3.next();
             JSONObject router = (JSONObject)r;
             String name = (String)router.get("name");
-            routerList.add(new Router(name));
+            String ip = (String)router.get("ip");
+            int port = ((Number)router.get("port")).intValue();
+            routerList.add(new Router(ip, port, name));
         }
 
         return routerList.toArray(new Router[0]);
@@ -171,6 +218,8 @@ public class Parser {
         }
         return port;
     }
+
+//    public static
 
     public static int getSubnetPort(String netName, JSONObject data) {
         JSONArray arr = (JSONArray) data.get("subnet");

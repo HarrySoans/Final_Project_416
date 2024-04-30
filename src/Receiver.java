@@ -19,12 +19,13 @@ class Receiver implements Runnable {
                 System.out.println("waiting...");
                 socket.receive(packet);
                 String data = new String(packet.getData(), 0, packet.getLength());
+                String ip = packet.getAddress().getHostAddress();
 
-//                Switch.forwardPacket(data);
+                System.out.println("received data: " + data);
+
                 Frame receivedFrame = Frame.deserialize(data);
-//                switchInstance.updateForwardingTable(srcMac, Integer.toString(packet.getPort()));
-                switchInstance.forwardFrameToRouter(receivedFrame);
-                switchInstance.processFrame(receivedFrame);
+//                switchInstance.forwardFrameToRouter(receivedFrame);
+                switchInstance.processFrame(receivedFrame, ip);
 
             }
         }catch (Exception e) {

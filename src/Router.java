@@ -9,20 +9,17 @@ import java.util.List;
 import java.util.Map;
 import org.json.simple.JSONObject;
 
-public class Router {
-    String name;
-    String ip;
-    int port;
+public class Router extends Device {
     DistanceVector distanceVector;
     private Map<String, Map<String, VectorEntry>> neighbors;
     private final List<String> subnets;
     JSONObject jsonData = Parser.parseJSONFile("src/config.json");
 
-    Router(String name) throws IOException {
-        this.name = name;
-        this.port = Parser.getPortByName(name, jsonData);
-        this.ip = Parser.getIpByName(name, jsonData);
-        this.distanceVector = new DistanceVector(this.name, new HashMap<>());
+    Router(String ip, int port, String name) throws IOException {
+        super(ip, port, name);
+//        this.port = Parser.getPortByName(name, jsonData);
+//        this.ip = Parser.getIpByName(name, jsonData);
+        this.distanceVector = new DistanceVector(this.deviceName, new HashMap<>());
         this.neighbors = new HashMap<>();
         this.subnets = Parser.parseConnectedSubnets(jsonData, name);
         initializeNeighbors();
@@ -33,11 +30,11 @@ public class Router {
     public void initializeNeighbors() {
         Link[] allNeighbors = Parser.parseLinks(this.jsonData);
         for(Link l : allNeighbors) {
-            if(l.getNode1().equals(this.name)) {
+            if(l.getNode1().equals(this.deviceName)) {
                 if(l.getNode2().startsWith("r")) {
                     neighbors.put(l.getNode2(), new HashMap<>());
                 }
-            }else if(l.getNode2().equals(this.name)){
+            }else if(l.getNode2().equals(this.deviceName)){
                 if(l.getNode1().startsWith("r")) {
                     neighbors.put(l.getNode1(), new HashMap<>());
                 }
@@ -134,7 +131,7 @@ public class Router {
     private void initDistanceVector() {
         for (String node : subnets) {
             String subnet = node;
-            VectorEntry entry = new VectorEntry(subnet, 0, this.name);
+            VectorEntry entry = new VectorEntry(subnet, 0, this.deviceName);
             distanceVector.addEntry(subnet, entry);
         }
     }
@@ -150,7 +147,7 @@ public class Router {
     }
 
     public String getName() {
-        return this.name;
+        return this.deviceName;
     }
 
     public String getIp() {
@@ -162,7 +159,7 @@ public class Router {
     }
 
     public static void main(String[] args) throws IOException {
-        Router r1 = new Router("r1");
+        Router r1 = new Router("localhost", 6000, "r1");
 
         while(true) {
             DatagramPacket packet = r1.packetReceiver();

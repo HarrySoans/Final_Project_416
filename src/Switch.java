@@ -10,10 +10,7 @@ import java.util.Map;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-public class Switch {
-        String name;
-        String ip;
-        int port;
+public class Switch extends Device {
         List<Device> connectedDevices;
         private DatagramSocket socket;
         private Map<String, String> forwardingTable;
@@ -21,16 +18,15 @@ public class Switch {
 
 
     Switch(String name, String ip, int port) throws IOException {
-        this.name = name;
-        this.ip = ip;
-        this.port = port;
+        super(ip, port, name);
         this.connectedDevices = new ArrayList<>();
         this.socket = new DatagramSocket(port);
         this.forwardingTable = new HashMap<>();
+        this.connectedDevices = Parser.parseConnectedDevices(jsonData, this.deviceName);
     }
 
     public String getName() {
-        return this.name;
+        return this.deviceName;
     }
 
     public String getIp() {
@@ -41,6 +37,10 @@ public class Switch {
         return this.port;
     }
 
+    public void initializeConnectedDevices() {
+
+    }
+
     //should receive frame from device
     public void receiveFrames() {
         Receiver receiver = new Receiver(socket, this);
@@ -48,13 +48,53 @@ public class Switch {
         receiverThread.start();
     }
 
-    public void processFrame(Frame frame) {
+    public void processFrame(Frame frame, String ip) throws IOException {
+        int port = 0;
+        PC[] PCList = Parser.parseDevices(jsonData);
+        String deviceName = frame.srcMac.split("\\.")[1];
         String srcMac = frame.getSrcMac();
         String destMac = frame.getDestMac();
         String message = frame.getMessage();
-
         System.out.println("Source MAC: " + srcMac);
         System.out.println("Destination MAC: " + destMac);
+        for(PC d : PCList) {
+            if(d.deviceName.equals(deviceName)) {
+                port = d.port;
+                break;
+            }
+        }
+
+        if(forwardingTable.isEmpty()) {
+            for (Device d : connectedDevices) {
+                this.forwardFrame(frame, d.ip+":"+d.port);
+                forwardingTable.put(d.deviceName, d.ip+":"+d.port);
+            }
+        }
+
+        //check forwarding table
+        if(!forwardingTable.containsKey(srcMac)) {
+            forwardingTable.put(srcMac, ip+":"+port);
+        }
+
+        this.forwardFrame(frame, forwardingTable.get(srcMac));
+
+
+
+        System.out.println("Forwarding table...");
+        for(Object o : forwardingTable.keySet()) {
+            String k = (String) o;
+
+            System.out.println(o);
+            System.out.println(forwardingTable.get(k));
+        }
+    }
+
+    public void forwardFrame(Frame frame, String forwardAddress) throws IOException {
+
+        String ip = forwardAddress.split(":")[0];
+        String port = forwardAddress.split(":")[1];
+        Sender sender = new Sender(ip, Integer.parseInt(port));
+        sender.sendFrame(frame);
     }
 
     //check
@@ -120,8 +160,10 @@ public class Switch {
     public static void main(String[] args) throws IOException {
         Switch s = new Switch("s1", "localhost", 3000);
         s.receiveFrames();
-        s.determineRouter("n1");
-
+        for (Device d : s.connectedDevices) {
+            System.out.println(d.deviceName);
+            System.out.println();
+        }
     }
 }
 
