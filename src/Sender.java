@@ -14,6 +14,7 @@ class Sender {
     public void sendFrame(Frame frame) throws IOException {
         System.out.println("triggered...");
         byte[] sendData = frame.serialize().getBytes();
+
         DatagramSocket socket = new DatagramSocket();
         DatagramPacket packet = new DatagramPacket(sendData, sendData.length, InetAddress.getByName(destinationIP), destinationPort);
         System.out.println(destinationIP + destinationPort);

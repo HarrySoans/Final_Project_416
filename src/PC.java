@@ -24,26 +24,17 @@ public class PC extends Device {
     //when device starts we want to prompt sending function
 
     public void sendMessage() throws IOException {
-        int destPort = 0;
-        String destIp = null;
-        PC[] PCList = Parser.parseDevices(jsonData);
+//        PC[] PCList = Parser.parseDevices(jsonData);
         Scanner scanner  = new Scanner(System.in);
         System.out.println("Enter a destination: ");
         String dest = scanner.nextLine();
         System.out.println("Enter a message");
         String message = scanner.nextLine();
         String destName = dest.split("\\.")[1];
-        for(PC d : PCList) {
-            if(d.deviceName.equals(destName)) {
-                destPort = d.port;
-                destIp = d.ip;
-                break;
-            }
-        }
+        int destPort = Parser.parsePCPortByName(jsonData, destName);
+        String destIp = Parser.parsePCIPByName(jsonData, destName);
 
-        System.out.println("we are sending rn!!");
-
-        Frame frame = new Frame(vIP, dest, message);
+        Frame frame = new Frame(vIP, message, dest);
         String destSubnet = dest.split("\\.")[0];
         //check if destination is currently in switch subnet if so we jut send it to the PC
 
@@ -81,8 +72,6 @@ public class PC extends Device {
                 System.out.println("waiting...");
                 socket.receive(packet);
                 String data = new String(packet.getData(), 0, packet.getLength());
-                String ip = packet.getAddress().getHostAddress();
-
                 System.out.println("received data: " + data);
             }
         }catch(SocketException e){
@@ -95,8 +84,9 @@ public class PC extends Device {
     //as a pc I want to send a frame to a switch
 
     public static void main(String[] args) throws IOException {
-        PC d = new PC("p1", "localhost", 4000, "n1.p1", "n1.r1", "n1");
-//        Device d = new Device("p2", "localhost", 4001, "n1.p2", "n1.r1", "n1");
+//        PC d = new PC("p1", "localhost", 5000, "n1.p1", "n1.r1", "n1");
+        PC d = new PC("p2", "localhost", 5001, "n1.p2", "n1.r1", "n1");
         d.startThreads();
+        d.receiveFrames();
     }
 }

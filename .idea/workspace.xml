@@ -7,14 +7,15 @@
     <list default="true" id="f5a89f38-252b-4904-a562-88fc9004af17" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Final_Project_416/Config.json" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Final_Project_416/Config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Final_Project_416/Device.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Final_Project_416/Device.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Final_Project_416/Frame.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Final_Project_416/Frame.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Final_Project_416/PC.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Final_Project_416/PC.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Final_Project_416/Parser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Final_Project_416/Parser.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Final_Project_416/Receiver.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Final_Project_416/Receiver.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Final_Project_416/Router.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Final_Project_416/Router.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Final_Project_416/Sender.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Final_Project_416/Sender.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Final_Project_416/Switch.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Final_Project_416/Switch.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Config.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/Config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Device.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PC.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Frame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Frame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PC.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Receiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Receiver.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Router.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Router.java" afterDir="false" />
@@ -35,10 +36,11 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
   </component>
-  <component name="KubernetesApiProvider"><![CDATA[{
-  "isMigrated": true
-}]]></component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
 }</component>
@@ -50,31 +52,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Application.Circle.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Device.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Router.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Switch.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;corretto-16&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Application.Circle.executor": "Run",
+    "Application.Device.executor": "Run",
+    "Application.Main.executor": "Run",
+    "Application.PC.executor": "Run",
+    "Application.Router.executor": "Run",
+    "Application.Switch.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "jdk.selected.JAVA_MODULE": "corretto-16",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RunManager" selected="Application.Switch">
+}]]></component>
+  <component name="RunManager" selected="Application.PC">
     <configuration name="Circle" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Circle" />
       <module name="Final_Project_416" />
@@ -114,8 +117,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Switch" />
         <item itemvalue="Application.PC" />
+        <item itemvalue="Application.Switch" />
         <item itemvalue="Application.Router" />
         <item itemvalue="Application.Circle" />
       </list>

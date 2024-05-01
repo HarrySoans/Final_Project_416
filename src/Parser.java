@@ -25,52 +25,132 @@ public class Parser {
         }
     }
 
-    public static Switch[] parseSwitches(JSONObject jsonData) throws IOException {
-        JSONArray arr = (JSONArray)jsonData.get("switches");
-        List<Switch> switchList = new ArrayList();
-        Iterator var3 = arr.iterator();
-
-        while(var3.hasNext()) {
-            Object s = var3.next();
-            JSONObject swInstance = (JSONObject)s;
-            String name = (String)swInstance.get("name");
-            String ip = (String)swInstance.get("ip");
-            int port = ((Number)swInstance.get("port")).intValue();
-            switchList.add(new Switch(name, ip, port));
+    public static int parseRouterPortByName(String routerName, JSONObject data) {
+        JSONArray arr = (JSONArray) data.get("routers");
+        int port = 0;
+        if(routerName != null){
+            for (Object ob : arr) {
+                JSONObject routerObj = (JSONObject) ob;
+                if(routerObj.get("name").equals(routerName)) {
+                    Object portObject = routerObj.get("port");
+                    if (portObject instanceof Number) {
+                        port = ((Number) portObject).intValue();
+                        break;
+                    }
+                }
+            }
         }
-
-        return switchList.toArray(new Switch[0]);
+        return port;
     }
 
-    public static PC[] parseDevices(JSONObject jsonData) throws IOException {
+    public static int parsePCPortByName(JSONObject jsonData, String deviceName) {
         JSONArray arr = (JSONArray)jsonData.get("devices");
-        List<PC> PCList = new ArrayList();
-        Iterator var3 = arr.iterator();
-
-        while(var3.hasNext()) {
-            Object d = var3.next();
-            JSONObject device = (JSONObject)d;
-            String name = (String)device.get("name");
-            String ip = (String)device.get("ip");
-            int port = ((Number) device.get("port")).intValue();
-            String vIP = device.get("subnet") + "." + name;
-            String subnet = (String) device.get("subnet");
-            String gatewayRouter = (String)device.get("gateway_router");
-            PCList.add(new PC(name, ip, port, vIP, gatewayRouter, subnet));
+        int port = 0;
+        for (Object d : arr) {
+            JSONObject ob = (JSONObject) d;
+            String name = (String) ob.get("name");
+            if(name.equals(deviceName)) {
+                port = ((Number) ob.get("port")).intValue();
+            }
         }
-
-        return PCList.toArray(new PC[0]);
+        return port;
     }
 
-//    public Device getDeviceByName(JSONObject jsonData, String deviceName) throws IOException {
-//        Device[] devices = Parser.parseDevices(jsonData);
-//        for(Object d : devices) {
-//            JSONObject device = (JSONObject) d;
-//            if(device.get("name").equals(deviceName)) {
-//                return
-//            }
-//        }
-//    }
+    public static int parseSwitchPortByName(JSONObject jsonData, String deviceName) {
+        JSONArray arr = (JSONArray)jsonData.get("switches");
+        int port = 0;
+        for (Object d : arr) {
+            JSONObject ob = (JSONObject) d;
+            String name = (String) ob.get("name");
+            if(name.equals(deviceName)) {
+                port = ((Number) ob.get("port")).intValue();
+            }
+        }
+        return port;
+    }
+
+    public static String parsePCIPByName(JSONObject jsonData, String deviceName) {
+        JSONArray arr = (JSONArray)jsonData.get("devices");
+        String ip = null;
+        for (Object d : arr) {
+            JSONObject ob = (JSONObject) d;
+            String name = (String) ob.get("name");
+            if(name.equals(deviceName)) {
+                ip = (String) ob.get("ip");
+            }
+        }
+        return ip;
+    }
+
+    public static String parseSwitchIPByName(JSONObject jsonData, String deviceName) {
+        JSONArray arr = (JSONArray)jsonData.get("switches");
+        String ip = null;
+        for (Object d : arr) {
+            JSONObject ob = (JSONObject) d;
+            String name = (String) ob.get("name");
+            if(name.equals(deviceName)) {
+                ip = (String) ob.get("ip");
+            }
+        }
+        return ip;
+    }
+
+    public static String parseRouterIPByName(JSONObject jsonData, String deviceName) {
+        JSONArray arr = (JSONArray)jsonData.get("routers");
+        String ip = null;
+        for (Object d : arr) {
+            JSONObject ob = (JSONObject) d;
+            String name = (String) ob.get("name");
+            if(name.equals(deviceName)) {
+                ip = (String) ob.get("ip");
+            }
+        }
+        return ip;
+    }
+
+    public static String getRouterDeviceByName(JSONObject jsonData, String deviceName) throws IOException {
+        JSONArray arr = (JSONArray)jsonData.get("routers");
+        for (Object o : arr) {
+            JSONObject ob = (JSONObject) o;
+            String name = (String) ((JSONObject) o).get("name");
+            if(name.equals(deviceName)) {
+                String ip = (String) ob.get("ip");
+                int port = ((Number)ob.get("port")).intValue();
+                return name+"/"+ip+":"+port;
+            }
+        }
+
+        return null;
+    }
+
+    public static String getPCDeviceByName(JSONObject jsonData, String deviceName) throws IOException {
+        JSONArray arr = (JSONArray)jsonData.get("devices");
+        for (Object o : arr) {
+            JSONObject ob = (JSONObject) o;
+            String name = (String) ((JSONObject) o).get("name");
+            if(name.equals(deviceName)) {
+                String ip = (String) ob.get("ip");
+                int port = ((Number)ob.get("port")).intValue();
+                return name+"/"+ip+":"+port;
+            }
+        }
+
+        return null;
+    }
+
+    public static String getSwitchDeviceByName(JSONObject jsonData, String deviceName) throws IOException {
+        JSONArray arr = (JSONArray)jsonData.get("switches");
+        for (Object o : arr) {
+            JSONObject ob = (JSONObject) o;
+            String name = (String) ((JSONObject) o).get("name");
+            if(name.equals(deviceName)) {
+                String ip = (String) ob.get("ip");
+                int port = ((Number)ob.get("port")).intValue();
+                return name+"/"+ip+":"+port;
+            }
+        }
+        return null;
+    }
 
     public static Link[] parseLinks(JSONObject jsonData) {
         JSONArray arr = (JSONArray)jsonData.get("links");
@@ -86,42 +166,6 @@ public class Parser {
         }
 
         return linkList.toArray(new Link[0]);
-    }
-
-    public static List<Device> parseConnectedDevices(JSONObject jsonData, String deviceName) throws IOException {
-        Link[] links = Parser.parseLinks(jsonData);
-        PC[] pcList = Parser.parseDevices(jsonData);
-        Router[] routerList = Parser.parseRouters(jsonData);
-        Switch[] switchList = Parser.parseSwitches(jsonData);
-        List<Device> connected = new ArrayList<>();
-
-        for (Link l : links) {
-            if(l.getNode1().equals(deviceName)) {
-                //put the device in 2 inside the connected
-                if(l.getNode2().startsWith("r")) {
-                    //create router instance and put here
-                    for (Router r : routerList) {
-                        if(r.getName().equals(l.getNode2())){
-                            connected.add(r);
-                        }
-                    }
-                }else if(l.getNode2().startsWith("p")){
-                    //create pc instance and put here
-                    for (PC p : pcList) {
-                        if(p.getDeviceName().equals(l.getNode2())) {
-                            connected.add(p);
-                        }
-                    }
-                }else if (l.getNode2().startsWith("s")){
-                    for (Switch s : switchList){
-                        if(s.getDeviceName().equals(l.getNode2())) {
-                            connected.add(s);
-                        }
-                    }
-                }
-            }
-        }
-        return connected;
     }
 
     public static Router[] parseRouters(JSONObject jsonData) throws IOException {
@@ -171,22 +215,7 @@ public class Parser {
         return subnets;
     }
 
-    public static Destination[] parseDestinations(JSONObject jsonData) {
-        JSONArray arr = (JSONArray)jsonData.get("destination");
-        List<Destination> destinationList = new ArrayList();
-        Iterator var3 = arr.iterator();
-
-        while(var3.hasNext()) {
-            Object d = var3.next();
-            JSONObject destinationObj = (JSONObject)d;
-            String name = (String)destinationObj.get("name");
-            destinationList.add(new Destination(name));
-        }
-
-        return destinationList.toArray(new Destination[0]);
-    }
-
-    public static String getIpByName(String routerName, JSONObject data) {
+    public static String parseGetRouterIpByName(String routerName, JSONObject data) {
         System.out.println(routerName);
         JSONArray arr = (JSONArray) data.get("routers");
         String ip = null;
@@ -201,25 +230,6 @@ public class Parser {
         return ip;
     }
 
-    public static int getPortByName(String routerName, JSONObject data) {
-        JSONArray arr = (JSONArray) data.get("routers");
-        int port = 0;
-        if(routerName != null){
-            for (Object ob : arr) {
-                JSONObject routerObj = (JSONObject) ob;
-                if(routerObj.get("name").equals(routerName)) {
-                    Object portObject = routerObj.get("port");
-                    if (portObject instanceof Number) {
-                        port = ((Number) portObject).intValue();
-                        break;
-                    }
-                }
-            }
-        }
-        return port;
-    }
-
-//    public static
 
     public static int getSubnetPort(String netName, JSONObject data) {
         JSONArray arr = (JSONArray) data.get("subnet");

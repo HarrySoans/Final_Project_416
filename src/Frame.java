@@ -21,14 +21,15 @@ class Frame {
     public String getMessage(){return this.message;}
 
     public String serialize() {
-        return srcMac + ':' + destMac + ":" + message;
+        return srcMac + ':' + message + ":" + destMac;
     }
 
     public static Frame deserialize(String data) {
         String[] parts = data.split(":");
         String srcMac = parts[0];
-        String destMac = parts[1];
-        String message = parts[2];
-        return new Frame(srcMac, destMac, message);
+        String message = parts[1];
+        String destMac = parts[2];
+
+        return new Frame(srcMac, message, destMac);
     }
 }

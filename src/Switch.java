@@ -11,7 +11,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class Switch extends Device {
-        List<Device> connectedDevices;
+        Map<String, String> connectedDevices;
         private DatagramSocket socket;
         private Map<String, String> forwardingTable;
         JSONObject jsonData = Parser.parseJSONFile("src/config.json");
@@ -19,10 +19,10 @@ public class Switch extends Device {
 
     Switch(String name, String ip, int port) throws IOException {
         super(ip, port, name);
-        this.connectedDevices = new ArrayList<>();
+        this.connectedDevices = new HashMap<>();
         this.socket = new DatagramSocket(port);
         this.forwardingTable = new HashMap<>();
-        this.connectedDevices = Parser.parseConnectedDevices(jsonData, this.deviceName);
+        initializeConnectedDevices();
     }
 
     public String getName() {
@@ -37,8 +37,25 @@ public class Switch extends Device {
         return this.port;
     }
 
-    public void initializeConnectedDevices() {
-
+    public void initializeConnectedDevices() throws IOException {
+        Link[] links = Parser.parseLinks(jsonData);
+        for (Link l : links) {
+            if(l.getNode1().equals(this.deviceName)) {
+                if(l.getNode2().startsWith("r")) {
+                    String router = Parser.getRouterDeviceByName(jsonData, l.getNode2());
+                    String[] parts = router.split("/");
+                    connectedDevices.put(parts[0], parts[1]);
+                }else if (l.getNode2().startsWith("p")) {
+                    String pc = Parser.getPCDeviceByName(jsonData, l.getNode2());
+                    String[] parts = pc.split("/");
+                    connectedDevices.put(parts[0], parts[1]);
+                }else if (l.getNode2().startsWith("s")) {
+                    String s = Parser.getSwitchDeviceByName(jsonData, l.getNode2());
+                    String[] parts = s.split("/");
+                    connectedDevices.put(parts[0], parts[1]);
+                }
+            }
+        }
     }
 
     //should receive frame from device
@@ -49,36 +66,33 @@ public class Switch extends Device {
     }
 
     public void processFrame(Frame frame, String ip) throws IOException {
-        int port = 0;
-        PC[] PCList = Parser.parseDevices(jsonData);
         String deviceName = frame.srcMac.split("\\.")[1];
         String srcMac = frame.getSrcMac();
         String destMac = frame.getDestMac();
         String message = frame.getMessage();
         System.out.println("Source MAC: " + srcMac);
         System.out.println("Destination MAC: " + destMac);
-        for(PC d : PCList) {
-            if(d.deviceName.equals(deviceName)) {
-                port = d.port;
-                break;
-            }
-        }
+        int port = Parser.parsePCPortByName(jsonData, deviceName);
 
         if(forwardingTable.isEmpty()) {
-            for (Device d : connectedDevices) {
-                this.forwardFrame(frame, d.ip+":"+d.port);
-                forwardingTable.put(d.deviceName, d.ip+":"+d.port);
+            for (String key : connectedDevices.keySet()) {
+                String val = connectedDevices.get(key);
+                this.forwardFrame(frame, val);
+                forwardingTable.put(key, val);
             }
         }
 
-        //check forwarding table
-        if(!forwardingTable.containsKey(srcMac)) {
-            forwardingTable.put(srcMac, ip+":"+port);
-        }
+//        check forwarding table
+//        if(!forwardingTable.containsKey(srcMac)) {
+//            forwardingTable.put(srcMac, ip+":"+port);
+//            this.forwardFrame(frame, forwardingTable.get(srcMac));
+//        }else {
+//            System.out.println("entered forward stage...");
+//            this.forwardFrame(frame, forwardingTable.get(srcMac));
+//        }
+
 
         this.forwardFrame(frame, forwardingTable.get(srcMac));
-
-
 
         System.out.println("Forwarding table...");
         for(Object o : forwardingTable.keySet()) {
@@ -90,9 +104,9 @@ public class Switch extends Device {
     }
 
     public void forwardFrame(Frame frame, String forwardAddress) throws IOException {
-
         String ip = forwardAddress.split(":")[0];
         String port = forwardAddress.split(":")[1];
+        System.out.println("entered forward stage...");
         Sender sender = new Sender(ip, Integer.parseInt(port));
         sender.sendFrame(frame);
     }
@@ -139,7 +153,7 @@ public class Switch extends Device {
                 }
             }
         }
-        ip = Parser.getIpByName(router, jsonData);
+        ip = Parser.parseRouterIPByName(jsonData, router);
 
         //Based of config
         return ip;
@@ -160,8 +174,9 @@ public class Switch extends Device {
     public static void main(String[] args) throws IOException {
         Switch s = new Switch("s1", "localhost", 3000);
         s.receiveFrames();
-        for (Device d : s.connectedDevices) {
-            System.out.println(d.deviceName);
+        for (String key : s.connectedDevices.keySet()) {
+            String val = s.connectedDevices.get(key);
+            System.out.println(key + " : " + val);
             System.out.println();
         }
     }

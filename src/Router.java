@@ -44,8 +44,8 @@ public class Router extends Device {
 
     private void sendDistanceVectorToNeighbors() {
         for (String neighbor : neighbors.keySet()) {
-            String ip = Parser.getIpByName(neighbor, jsonData);
-            int port = Parser.getPortByName(neighbor, jsonData);
+            String ip = Parser.parseGetRouterIpByName(neighbor, jsonData);
+            int port = Parser.parseRouterPortByName(neighbor, jsonData);
             constructUDPacket(ip, port, distanceVector);
         }
     }

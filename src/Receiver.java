@@ -26,7 +26,6 @@ class Receiver implements Runnable {
                 Frame receivedFrame = Frame.deserialize(data);
 //                switchInstance.forwardFrameToRouter(receivedFrame);
                 switchInstance.processFrame(receivedFrame, ip);
-
             }
         }catch (Exception e) {
             e.printStackTrace();
